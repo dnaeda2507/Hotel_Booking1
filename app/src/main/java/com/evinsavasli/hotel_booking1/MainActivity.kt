@@ -20,6 +20,7 @@ import com.evinsavasli.hotel_booking1.ui.theme.login.LoginScreen
 import com.evinsavasli.hotel_booking1.ui.theme.signup.SignUpScreen
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -31,8 +32,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    val navController = rememberNavController()
-                    MyNavigation(navController)
+                    MyNavigation()
                 }
             }
         }

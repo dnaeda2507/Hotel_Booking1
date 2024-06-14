@@ -44,6 +44,10 @@ import com.evinsavasli.hotel_booking1.ui.theme.Hotel_Booking1Theme
 import com.evinsavasli.hotel_booking1.ui.theme.components.HeaderText
 import com.evinsavasli.hotel_booking1.ui.theme.components.LoginTextField
 
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
+
 val defaultPadding=16.dp
 val itemSpacing=8.dp
 
@@ -60,7 +64,7 @@ fun LoginScreen(onLoginClick:()->Unit,onSignUpClick:()->Unit){
     }
     val isFieldsEmpty = userName.isNotEmpty() && password.isNotEmpty()
     val context = LocalContext.current
-
+    val auth = Firebase.auth
 
 
     Column (
@@ -79,7 +83,7 @@ fun LoginScreen(onLoginClick:()->Unit,onSignUpClick:()->Unit){
         LoginTextField(
             value = userName,
             onValueChange = setUserName,
-            labelText = "Username",
+            labelText = "Email",
             leadingIcon = Icons.Default.Person,
             modifier = Modifier.fillMaxWidth()
 
@@ -114,11 +118,17 @@ fun LoginScreen(onLoginClick:()->Unit,onSignUpClick:()->Unit){
             }
         }
         Spacer(Modifier.height(itemSpacing))
-        Button(onClick = onLoginClick,
-            modifier = Modifier.fillMaxWidth(),
-            enabled = isFieldsEmpty) {
+        Button(onClick = {
+            auth.signInWithEmailAndPassword(userName, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        onLoginClick()
+                    } else {
+                        Toast.makeText(context, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }, modifier = Modifier.fillMaxWidth(), enabled = isFieldsEmpty) {
             Text("Login")
-
         }
         AlternativeLoginOptions(
             onIconClick ={index->

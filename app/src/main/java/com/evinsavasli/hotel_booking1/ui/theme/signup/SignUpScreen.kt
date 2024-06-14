@@ -38,6 +38,9 @@ import com.evinsavasli.hotel_booking1.ui.theme.Hotel_Booking1Theme
 import com.evinsavasli.hotel_booking1.ui.theme.components.HeaderText
 import com.evinsavasli.hotel_booking1.ui.theme.components.LoginTextField
 import com.evinsavasli.hotel_booking1.ui.theme.login.defaultPadding
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+
 
 @Composable
 fun SignUpScreen(
@@ -71,6 +74,7 @@ fun SignUpScreen(
             &&password.isNotEmpty()
             &&confirmPassword.isNotEmpty()
             && agree
+    val auth = Firebase.auth
     Column (
         modifier= Modifier
             .verticalScroll(rememberScrollState())
@@ -170,11 +174,19 @@ fun SignUpScreen(
         }
         Spacer(Modifier.height(defaultPadding + 8.dp))
         Button(onClick ={
-             isPasswordSame=password!=confirmPassword
+            isPasswordSame=password!=confirmPassword
             if (!isPasswordSame){
-                onSignUpClick()
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            onSignUpClick()
+                        } else {
+                            Toast.makeText(context, "Sign Up failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
             }
-        }, modifier = Modifier.fillMaxWidth(),
+        },
+            modifier = Modifier.fillMaxWidth(),
         enabled = isFieldNotEmpty) {
             Text(text = "Sign Up")
         }

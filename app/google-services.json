@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "855138076407",
+    "project_id": "hotel-booking1-f5b08",
+    "storage_bucket": "hotel-booking1-f5b08.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855138076407:android:cbd574900e4adc0fe1b5f2",
+        "android_client_info": {
+          "package_name": "com.evinsavasli.hotel_booking1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLs-8m-H5TTz-XGoDoxWWAq4AtQ7WvaJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

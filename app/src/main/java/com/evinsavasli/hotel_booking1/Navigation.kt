@@ -1,20 +1,19 @@
 package com.evinsavasli.hotel_booking1
 
-import android.content.Context
-import android.content.Intent
+
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigation
-import com.evinsavasli.hotel_booking1.data.Hotel
+import androidx.navigation.compose.rememberNavController
+import com.evinsavasli.hotel_booking1.data.hotels
 import com.evinsavasli.hotel_booking1.ui.theme.HomeScreen
+import com.evinsavasli.hotel_booking1.ui.theme.HotelDetailScreen
 import com.evinsavasli.hotel_booking1.ui.theme.Hotel_Booking1Theme
+import com.evinsavasli.hotel_booking1.ui.theme.SearchScreen
 import com.evinsavasli.hotel_booking1.ui.theme.login.LoginScreen
 import com.evinsavasli.hotel_booking1.ui.theme.signup.PolicyScreen
 import com.evinsavasli.hotel_booking1.ui.theme.signup.PrivacyScreen
@@ -28,13 +27,16 @@ sealed class Route{
     data class PolicyScreen(val name:String="Policy"):Route()
     data class HomeScreen(val name:String="Home"):Route()
 
-}
-@Composable
-fun MyNavigation(navHostController:NavHostController) {
+    }
 
+
+@Composable
+fun MyNavigation( ) {
+
+    val navController = rememberNavController()
 
     NavHost(
-        navController = navHostController,
+        navController = navController,
         startDestination = "login_flow",
     ) {
        navigation(startDestination = Route.LoginScreen().name,
@@ -44,14 +46,13 @@ fun MyNavigation(navHostController:NavHostController) {
             composable(route = Route.LoginScreen().name) {
                 LoginScreen(
                     onLoginClick = {
-                        navHostController.navigate(
-                            Route.HomeScreen().name
+                        navController.navigate( Route.HomeScreen().name
                         ){
-                           popUpTo(route="login_flow")
+                           popUpTo(route="login_flow"){ inclusive = true }
                         }
                     },
                     onSignUpClick = {
-                        navHostController.navigateToSingleTop(
+                        navController.navigateToSingleTop(
                             Route.SignUpScreen().name
                         )
 
@@ -61,62 +62,62 @@ fun MyNavigation(navHostController:NavHostController) {
             composable(route = Route.SignUpScreen().name) {
                 SignUpScreen(
                     onSignUpClick = {
-                        navHostController.navigate(
+                        navController.navigate(
                             Route.HomeScreen().name
                         ){
-                            popUpTo(route="login_flow")
+                            popUpTo(route="login_flow"){ inclusive = true }
                         }
                     },
                     onLoginClick = {
-                        navHostController.navigateToSingleTop(
+                        navController.navigateToSingleTop(
                             Route.LoginScreen().name
                         )
                     },
                     onPrivacyClick = {
-                        navHostController.navigate(
-                            Route.PrivacyScreen().name
-                        ){
+                        navController.navigate(Route.PrivacyScreen().name){
                             launchSingleTop=true
                         }
                     },
-                    onPolicyClick = {
-                        navHostController.navigate(
-                            Route.PolicyScreen().name
+                    onPolicyClick = { navController.navigate(Route.PolicyScreen().name
                         ){
                             launchSingleTop=true
                         }
                     }
 
-
                 )
 
             }
             composable(route = Route.PrivacyScreen().name) {
-                PrivacyScreen {
-                    navHostController.navigateUp()
-                }
+                PrivacyScreen { navController.navigateUp() }
             }
             composable(route = Route.PolicyScreen().name) {
 
-                PolicyScreen {
-                    navHostController.navigateUp()
-                }
+                PolicyScreen { navController.navigateUp() }
 
             }
-
-
         }
-        composable(route = Route.HomeScreen().name) {
-            HomeScreen(navigateToProfile = {hotel->
+        composable(Route.HomeScreen().name) { HomeScreen(navController) }
 
-            })
+        composable("SearchResults") { SearchScreen(navController = navController, hotels = hotels) }
 
-
+        composable("HotelDetail/{hotelId}") { backStackEntry ->
+            val hotelId = backStackEntry.arguments?.getString("hotelId")?.toIntOrNull()
+            val hotel = hotels.find { it.id == hotelId }
+            hotel?.let { HotelDetailScreen(it, navController) }
         }
 
+    composable("Booking/{hotelId}") { backStackEntry ->
+        val hotelId = backStackEntry.arguments?.getString("hotelId")?.toIntOrNull()
+        val hotel = hotels.find { it.id == hotelId }
+        hotel?.let {
+            PaymentScreen(onPayClicked = { /* Handle payment logic */ })
+        }
     }
+}
+
 
 }
+
 fun NavController.navigateToSingleTop(route: String) {
     navigate(route) {
         popUpTo(graph.findStartDestination().id) {
@@ -131,6 +132,6 @@ fun NavController.navigateToSingleTop(route: String) {
 @Composable
 fun PrevNavigation(){
     Hotel_Booking1Theme {
-     MyNavigation(navHostController = NavHostController(LocalContext.current))
+     MyNavigation()
     }
 }
