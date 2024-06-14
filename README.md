@@ -1,11 +1,19 @@
 Hotel Booking Application Project Report
+
 Team Members:
 1.Evin Savaşlı
 2.Eda Dana
+
+
 Work Distribution:
 We worked together on all sections of the project. This includes UI/UX design, user authentication/registration, GitHub repository management, hotel search and filtering, ratings and comments, booking and cancellation functionalities.
+
+
 Overview: Our project is a Hotel Booking application developed using Kotlin on Android Studio. The app allows users to search for available rooms in various hotels, view hotel ratings and comments, book and cancel rooms, and rate/comment on their stay. The project will incorporate databases and backend services for seamless data management and communication.
+
 Expectations: We expect to create a user-friendly application with a clean and intuitive interface. Our app will provide essential functionalities for hotel booking, ensuring a smooth and reliable user experience. Each team member will contribute their expertise to ensure timely and effective completion of the project.
+
+
 Project Structure and Goals:
 1.	User Authentication/Registration:
 •	Goal: Implement secure user authentication and registration.
