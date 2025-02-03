@@ -10,11 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.evinsavasli.hotel_booking1.ui.theme.login.LoginScreen
 
 @Composable
-fun MyTripsScreen(navController: NavController) {
+fun MyTripsScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -28,9 +30,16 @@ fun MyTripsScreen(navController: NavController) {
             modifier = Modifier.padding(bottom = 16.dp)
         )
         Text(
-            text = "This is where your trips will be displayed.",
+            text = "you don't have any trip",
             style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center
         )
+    }
+}
+@Preview(showSystemUi = true)
+@Composable
+fun PrevMyTripsScreen() {
+    Hotel_Booking1Theme {
+        MyTripsScreen()
     }
 }

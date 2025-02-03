@@ -16,6 +16,9 @@
       <SelectionState runConfigName="PreviewPaymentForm">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="PrevMyTripsScreen">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>
